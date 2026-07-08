@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+.eggs/
+*.egg-info/
+dist/
+build/
+
+# Env & secrets
+.env
+
+# Data artifacts
+tmp/
+*.pdf
+!README.md
+
+# Editor/IDE
+.vscode/
+.idea/
+*~

@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=72"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "docupull"
+version = "0.1.0"
+description = "PDF → validated structured JSON pipeline for digital and scanned documents"
+requires-python = ">=3.11,<3.12"
+dependencies = [
+  "fastapi>=0.116",
+  "uvicorn[standard]>=0.37",
+  "pydantic>=2.10",
+  "pydantic-settings>=2.9",
+  "pymupdf>=1.25",
+  "pdfplumber>=0.11",
+  "pytesseract>=0.3",
+  "opencv-python-headless>=4.10",
+  "pillow>=10.4",
+  "openai>=1.65",
+  "anthropic>=0.48",
+  "python-dotenv>=1.1",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3",
+  "pytest-mock>=3.14",
+  "ruff>=0.9",
+  "black>=24.10",
+  "mypy>=1.14",
+  "httpx>=0.28",
+]
+
+[tool.setuptools.packages.find]
+include = ["app*", "benchmark*", "core*", "tests*"]
+
+[tool.black]
+line-length = 88
+target-version = ["py311"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 88
+src = ["app", "benchmark", "core", "tests"]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = ["E501"]
+
+[tool.ruff.lint.isort]
+force-single-line = true
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

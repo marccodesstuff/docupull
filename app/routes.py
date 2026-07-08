@@ -1,0 +1,39 @@
+from fastapi import APIRouter, File, HTTPException, UploadFile
+
+from pathlib import Path
+
+from core.pipeline import run
+
+router = APIRouter()
+
+
+@router.get("/health")
+def health() -> dict[str, bool]:
+    return {"ok": True}
+
+
+@router.post("/extract")
+async def extract(file: UploadFile = File(...)) -> dict:
+    import os
+    import tempfile
+
+    from docupull.config import get_settings
+
+    settings = get_settings()
+    upload_dir = Path(settings.upload_dir)
+    upload_dir.mkdir(parents=True, exist_ok=True)
+    suffix = Path(file.filename or "upload.pdf").suffix
+    if suffix.lower() != ".pdf":
+        raise HTTPException(status_code=400, detail="Only PDF uploads are supported.")
+
+    fd, tmp_path = tempfile.mkstemp(suffix=suffix, dir=str(upload_dir))
+    try:
+        content = await file.read()
+        with os.fdopen(fd, "wb") as f:
+            f.write(content)
+        return run(tmp_path)
+    finally:
+        try:
+            os.remove(tmp_path)
+        except OSError:
+            pass

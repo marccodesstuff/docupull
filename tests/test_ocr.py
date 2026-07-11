@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import cv2
 import numpy as np
 import pytest
 from PIL import Image
@@ -15,8 +14,6 @@ def _write_png(path: Path, arr: np.ndarray) -> None:
 def test_ocr_page_returns_text_and_confidence(tmp_path, monkeypatch: pytest.MonkeyPatch) -> None:
     src = tmp_path / "page.png"
     _write_png(src, np.full((64, 64), 255, dtype=np.uint8))
-
-    fake_words = [{"text": "Hello", "confidence": 0.95}]
 
     class _FakeData:
         text = ["Hello"]

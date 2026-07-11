@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import pytest
-
 from core.schema.lab_report import LabReport
-from core.validate import coerce_field, validate_document
+from core.validate import coerce_field
+from core.validate import validate_document
 
 
 def test_validate_document_coerces_report_date() -> None:

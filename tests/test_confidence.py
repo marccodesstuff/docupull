@@ -1,10 +1,11 @@
 from __future__ import annotations
 
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
+from unittest.mock import patch
 
 import pytest
-
-from core.confidence import FieldScore, route_document, score_field
+from core.confidence import route_document
+from core.confidence import score_field
 from core.pipeline import run
 from core.schema.lab_report import LabReport
 
@@ -40,7 +41,6 @@ def test_route_document_ok_when_above_threshold() -> None:
 
 
 def test_run_returns_expected_keys(tmp_path) -> None:
-    from core.schema.lab_report import LabReport
 
     pdf = tmp_path / "r.pdf"
     pdf.write_bytes(

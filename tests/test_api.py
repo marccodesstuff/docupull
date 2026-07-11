@@ -1,14 +1,9 @@
 from __future__ import annotations
 
-import io
-
-from fastapi.testclient import TestClient
-
 import pytest
-
 from app.main import create_app
-from core.pipeline import run
 from core.schema.lab_report import LabReport
+from fastapi.testclient import TestClient
 
 
 @pytest.fixture()

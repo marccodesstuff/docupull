@@ -1,8 +1,7 @@
 import pytest
-
+from core.llm.anthropic_client import AnthropicClient
 from core.llm.factory import build_client
 from core.llm.openai_client import OpenAIClient
-from core.llm.anthropic_client import AnthropicClient
 from core.schema.lab_report import LabReport
 
 

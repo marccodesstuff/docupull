@@ -3,9 +3,8 @@ from __future__ import annotations
 from unittest.mock import MagicMock
 
 import pytest
-
-from core.extract_structured import build_prompt, extract_structured
-from core.llm.factory import build_client
+from core.extract_structured import build_prompt
+from core.extract_structured import extract_structured
 from core.schema.lab_report import LabReport
 
 

@@ -1,4 +1,6 @@
-from core.classify import PageKind, PageClass, classify_pages
+from core.classify import PageClass
+from core.classify import PageKind
+from core.classify import classify_pages
 
 
 def test_classify_digital_above_threshold():

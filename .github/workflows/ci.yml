@@ -6,8 +6,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v7
-      - run: uv sync --frozen --dev
-      - run: uv run ruff check .
-      - run: uv run black --check .
-      - run: uv run mypy .
-      - run: uv run pytest -q
+      - run: uv sync --frozen
+      - run: pip install ruff black mypy pytest
+      - run: ruff check .
+      - run: black --check .
+      - run: mypy .
+      - run: pytest -q

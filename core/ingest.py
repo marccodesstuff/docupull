@@ -1,8 +1,7 @@
 from __future__ import annotations
 
-from pathlib import Path
-
 import os
+from pathlib import Path
 
 
 def accept_pdf(path: str | Path) -> Path:

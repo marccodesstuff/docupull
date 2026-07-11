@@ -2,9 +2,8 @@
 
 from __future__ import annotations
 
-from typing import Type
-
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel
+from pydantic import ValidationError
 
 from core.schema.lab_report import AnalyteResult
 
@@ -15,7 +14,7 @@ def _try_parse_date(value: object) -> str | None:
     return None
 
 
-def coerce_field(name: str, value: object, schema: Type[BaseModel]) -> tuple[object, bool]:
+def coerce_field(name: str, value: object, schema: type[BaseModel]) -> tuple[object, bool]:
     if name == "report_date":
         parsed = _try_parse_date(value)
         return parsed, parsed is not None
@@ -41,7 +40,7 @@ def coerce_field(name: str, value: object, schema: Type[BaseModel]) -> tuple[obj
     return value, True
 
 
-def validate_document(*, data: BaseModel, schema: Type[BaseModel]) -> BaseModel:
+def validate_document(*, data: BaseModel, schema: type[BaseModel]) -> BaseModel:
     """Recoerce known fields into their target types when possible."""
     source = data.model_dump()
     for name, value in list(source.items()):

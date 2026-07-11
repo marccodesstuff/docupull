@@ -1,10 +1,13 @@
-from fastapi import APIRouter, File, HTTPException, UploadFile
-
 from pathlib import Path
 
 from core.pipeline import run
+from fastapi import APIRouter
+from fastapi import File
+from fastapi import HTTPException
+from fastapi import UploadFile
 
 router = APIRouter()
+FILE_DEPENDENCY = File(...)
 
 
 @router.get("/health")
@@ -13,9 +16,10 @@ def health() -> dict[str, bool]:
 
 
 @router.post("/extract")
-async def extract(file: UploadFile = File(...)) -> dict:
+async def extract(file: UploadFile = FILE_DEPENDENCY) -> dict:
     import os
     import tempfile
+    from contextlib import suppress
 
     from docupull.config import get_settings
 
@@ -33,7 +37,5 @@ async def extract(file: UploadFile = File(...)) -> dict:
             f.write(content)
         return run(tmp_path)
     finally:
-        try:
+        with suppress(OSError):
             os.remove(tmp_path)
-        except OSError:
-            pass

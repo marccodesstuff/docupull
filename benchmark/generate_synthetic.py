@@ -6,12 +6,15 @@ import json
 import os
 from pathlib import Path
 
+from docupull.core.schema.lab_report import AnalyteResult
+from docupull.core.schema.lab_report import LabReport
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
-
-from docupull.core.schema.lab_report import AnalyteResult, LabReport
-
+from reportlab.platypus import Paragraph
+from reportlab.platypus import SimpleDocTemplate
+from reportlab.platypus import Spacer
+from reportlab.platypus import Table
+from reportlab.platypus import TableStyle
 
 ANALYTES = [
     {"analyte": "Glucose", "value": 95.0, "unit": "mg/dL", "reference_range": "70-99", "flag": "normal"},

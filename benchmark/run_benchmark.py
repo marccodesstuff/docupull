@@ -9,9 +9,10 @@ import time
 from pathlib import Path
 from typing import Any
 
-from benchmark.generate_synthetic import generate_dataset
 from core.pipeline import run
 from core.schema.lab_report import LabReport
+
+from benchmark.generate_synthetic import generate_dataset
 
 
 def _truth_field(truth: dict[str, Any], name: str) -> Any:

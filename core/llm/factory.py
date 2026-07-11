@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import os
 
+from core.llm.anthropic_client import AnthropicClient
 from core.llm.base import BaseLLMClient
 from core.llm.openai_client import OpenAIClient
-from core.llm.anthropic_client import AnthropicClient
 
 
 def build_client(*, provider: str | None = None) -> BaseLLMClient:

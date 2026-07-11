@@ -4,8 +4,11 @@ from __future__ import annotations
 
 from typing import Any
 
-from core.classify import PageKind, classify_pages
-from core.confidence import FieldScore, route_document, score_field
+from core.classify import PageKind
+from core.classify import classify_pages
+from core.confidence import FieldScore
+from core.confidence import route_document
+from core.confidence import score_field
 from core.extract_structured import extract_structured
 from core.extract_text import render_text
 from core.ocr import ocr_page
@@ -31,8 +34,6 @@ def run(path: str, *, threshold: float = 0.75, tesseract_cmd: str | None = None)
     if scanned:
         import os
 
-        from PIL import Image
-
         import fitz
 
         doc = fitz.open(path)
@@ -50,10 +51,10 @@ def run(path: str, *, threshold: float = 0.75, tesseract_cmd: str | None = None)
                 page_texts.append(result.text)
                 if result.mean_confidence:
                     ocr_confs.append(result.mean_confidence)
-                try:
+                from contextlib import suppress
+
+                with suppress(OSError):
                     os.remove(img_path)
-                except OSError:
-                    pass
         text = "\n".join(page_texts)
         ocr_mean = (sum(ocr_confs) / len(ocr_confs)) if ocr_confs else None
     else:

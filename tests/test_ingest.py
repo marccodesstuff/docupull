@@ -1,7 +1,11 @@
+import pathlib
+
 import pytest
 
 
-def test_accept_pdf_requires_pdf_extension(tmp_path, monkeypatch):
+def test_accept_pdf_requires_pdf_extension(
+    tmp_path: pathlib.Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     monkeypatch.setenv("DOCUPULL_UPLOAD_DIR", str(tmp_path))
     t = tmp_path / "x.txt"
     t.write_text("hi")
@@ -11,7 +15,9 @@ def test_accept_pdf_requires_pdf_extension(tmp_path, monkeypatch):
         accept_pdf(t)
 
 
-def test_accept_pdf_relative_goes_under_upload_dir(tmp_path, monkeypatch):
+def test_accept_pdf_relative_goes_under_upload_dir(
+    tmp_path: pathlib.Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     monkeypatch.setenv("DOCUPULL_UPLOAD_DIR", str(tmp_path))
     monkeypatch.chdir(tmp_path)
     (tmp_path / "f.pdf").write_text("hi")
@@ -21,7 +27,7 @@ def test_accept_pdf_relative_goes_under_upload_dir(tmp_path, monkeypatch):
     assert out.resolve() == (tmp_path / "f.pdf").resolve()
 
 
-def test_accept_pdf_missing_raises():
+def test_accept_pdf_missing_raises() -> None:
     from core.ingest import accept_pdf
 
     with pytest.raises(FileNotFoundError):

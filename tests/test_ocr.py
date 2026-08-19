@@ -12,7 +12,7 @@ def _write_png(path: Path, arr: np.ndarray) -> None:
 
 
 def test_ocr_page_returns_text_and_confidence(
-    tmp_path, monkeypatch: pytest.MonkeyPatch
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     src = tmp_path / "page.png"
     _write_png(src, np.full((64, 64), 255, dtype=np.uint8))
@@ -22,11 +22,15 @@ def test_ocr_page_returns_text_and_confidence(
         conf = [95]
 
     class FakeTess:
-        def image_to_data(self, img, output_type):
+        def image_to_data(
+            self, img: object, output_type: object
+        ) -> dict[str, list[object]]:
             return {"text": ["Hello"], "conf": [95]}
 
     monkeypatch.setattr(
-        "pytesseract.image_to_data", FakeTess().image_to_data, raising=False
+        "pytesseract.image_to_data",
+        FakeTess().image_to_data,
+        raising=False,
     )
 
     mod = __import__("core.ocr", fromlist=["ocr_page"])

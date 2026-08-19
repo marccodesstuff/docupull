@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import pathlib
 from unittest.mock import MagicMock
 from unittest.mock import patch
 
@@ -42,7 +43,7 @@ def test_route_document_ok_when_above_threshold() -> None:
     assert route_document(scores=scores) == "ok"
 
 
-def test_run_returns_expected_keys(tmp_path) -> None:
+def test_run_returns_expected_keys(tmp_path: pathlib.Path) -> None:
 
     pdf = tmp_path / "r.pdf"
     pdf.write_bytes(

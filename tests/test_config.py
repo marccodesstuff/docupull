@@ -1,4 +1,7 @@
-def test_defaults(monkeypatch):
+import pytest
+
+
+def test_defaults(monkeypatch: pytest.MonkeyPatch) -> None:
     from core.config import get_settings
 
     monkeypatch.setenv("LLM_PROVIDER", "openai")
@@ -10,7 +13,7 @@ def test_defaults(monkeypatch):
     assert s.field_confidence_threshold == 0.75
 
 
-def test_env_override(monkeypatch):
+def test_env_override(monkeypatch: pytest.MonkeyPatch) -> None:
     from core.config import get_settings
 
     monkeypatch.setenv("LLM_PROVIDER", "anthropic")

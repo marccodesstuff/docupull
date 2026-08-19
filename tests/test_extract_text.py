@@ -1,8 +1,10 @@
+import pathlib
+
 import fitz
 import pytest
 
 
-def test_render_text_returns_index_chars_text(tmp_path):
+def test_render_text_returns_index_chars_text(tmp_path: pathlib.Path) -> None:
     doc = fitz.open()
     page = doc.new_page(width=72, height=72)
     page.insert_text((0, 10), "Hello world")
@@ -19,14 +21,14 @@ def test_render_text_returns_index_chars_text(tmp_path):
     assert isinstance(pages[0]["chars"], int)
 
 
-def test_extract_tables_not_implemented_yet(tmp_path):
+def test_extract_tables_not_implemented_yet(tmp_path: pathlib.Path) -> None:
     with pytest.raises(NotImplementedError):
         from core.extract_text import extract_tables
 
         extract_tables(tmp_path / "x.pdf")
 
 
-def test_render_text_returns_empty_pages_for_blank_pdf(tmp_path):
+def test_render_text_returns_empty_pages_for_blank_pdf(tmp_path: pathlib.Path) -> None:
     pdf_path = tmp_path / "blank.pdf"
     doc = fitz.open()
     doc.new_page(width=72, height=72)

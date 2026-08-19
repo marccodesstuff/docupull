@@ -7,24 +7,28 @@ from fastapi.testclient import TestClient
 
 
 @pytest.fixture()
-def client():
+def client() -> TestClient:
     app = create_app()
     return TestClient(app)
 
 
-def test_health(client):
+def test_health(client: TestClient) -> None:
     response = client.get("/health")
     assert response.status_code == 200
     assert response.json() == {"ok": True}
 
 
-def test_extract_rejects_non_pdf(client, monkeypatch: pytest.MonkeyPatch):
+def test_extract_rejects_non_pdf(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
     monkeypatch.setenv("DOCUPULL_UPLOAD_DIR", "/tmp/nope")
     response = client.post("/extract", files={"file": ("doc.txt", b"hi", "text/plain")})
     assert response.status_code == 400
 
 
-def test_extract_returns_json(client, monkeypatch: pytest.MonkeyPatch):
+def test_extract_returns_json(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
     pdf_bytes = (
         b"%PDF-1.4\n1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj\n"
         b"2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj\n"
@@ -35,7 +39,7 @@ def test_extract_returns_json(client, monkeypatch: pytest.MonkeyPatch):
     )
     fake_data = LabReport(patient_id="P1", report_date="2026-01-01")
 
-    def fake_run(path):
+    def fake_run(path: str) -> dict[str, object]:
         return {
             "schema": fake_data.model_dump(),
             "scores": [],

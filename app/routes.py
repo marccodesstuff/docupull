@@ -16,7 +16,7 @@ def health() -> dict[str, bool]:
 
 
 @router.post("/extract")
-async def extract(file: UploadFile = FILE_DEPENDENCY) -> dict:
+async def extract(file: UploadFile = FILE_DEPENDENCY) -> dict[str, object]:
     import os
     import tempfile
     from contextlib import suppress

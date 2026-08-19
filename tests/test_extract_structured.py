@@ -22,7 +22,7 @@ def test_extract_structured_uses_provider(monkeypatch: pytest.MonkeyPatch) -> No
     )
     monkeypatch.setattr("core.extract_structured.build_client", lambda: fake_client)
     out = extract_structured(text="some text", schema=LabReport)
-    assert out.patient_id == "P1"
+    assert out.model_dump()["patient_id"] == "P1"
     fake_client.generate_structured.assert_called_once()
 
 

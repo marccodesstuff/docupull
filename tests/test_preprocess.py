@@ -16,7 +16,9 @@ def test_preprocess_returns_path(tmp_path: Path) -> None:
     img[10:54, 10:54] = 255
     src = tmp_path / "page.png"
     _write_png(src, img)
-    out = __import__("core.preprocess", fromlist=["preprocess_image"]).preprocess_image(str(src))
+    out = __import__("core.preprocess", fromlist=["preprocess_image"]).preprocess_image(
+        str(src)
+    )
     assert Path(out).exists()
 
 
@@ -32,6 +34,8 @@ def test_preprocess_output_is_binary_like(tmp_path: Path) -> None:
     img[:, :] = 30
     src = tmp_path / "page.png"
     _write_png(src, img)
-    out = __import__("core.preprocess", fromlist=["preprocess_image"]).preprocess_image(str(src))
+    out = __import__("core.preprocess", fromlist=["preprocess_image"]).preprocess_image(
+        str(src)
+    )
     arr = np.array(Image.open(out))
     assert set(np.unique(arr)).issubset({0, 255})

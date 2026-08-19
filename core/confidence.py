@@ -27,14 +27,21 @@ def _validation_bonus(value: Any) -> float:
     return 1.0 if value is not None and value != "" else 0.5
 
 
-def score_field(*, name: str, value: Any, kind: str, ocr_mean_conf: float | None = None) -> float:
+def score_field(
+    *, name: str, value: Any, kind: str, ocr_mean_conf: float | None = None
+) -> float:
     source = _source_conf(kind=kind, ocr_mean_conf=ocr_mean_conf)
     cross = _cross_check(name=name, value=value)
     validation = _validation_bonus(value)
     return max(0.0, min(1.0, source * cross * validation))
 
 
-def route_document(*, scores: dict[str, float], threshold: float = 0.75, required: list[str] | None = None) -> str:
+def route_document(
+    *,
+    scores: dict[str, float],
+    threshold: float = 0.75,
+    required: list[str] | None = None,
+) -> str:
     required = required or list(LabReport.model_fields.keys())
     for field in required:
         if scores.get(field, 0.0) < threshold:
@@ -52,4 +59,9 @@ class FieldScore:
         self.value = value
 
     def to_dict(self) -> dict[str, Any]:
-        return {"name": self.name, "confidence": self.confidence, "source": self.source, "value": self.value}
+        return {
+            "name": self.name,
+            "confidence": self.confidence,
+            "source": self.source,
+            "value": self.value,
+        }

@@ -16,4 +16,6 @@ class LabReport(BaseModel):
     patient_id: str = Field(..., description="Synthetic patient identifier")
     report_date: str = Field(..., description="Report date")
     ordering_provider: str | None = Field(default=None, description="Ordering provider")
-    panel: list[AnalyteResult] = Field(default_factory=list, description="Analyte results")
+    panel: list[AnalyteResult] = Field(
+        default_factory=list, description="Analyte results"
+    )

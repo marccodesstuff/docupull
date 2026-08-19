@@ -1,4 +1,3 @@
-
 import fitz
 import pytest
 

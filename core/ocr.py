@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import cast
 
 
 @dataclass(frozen=True)
@@ -31,6 +32,6 @@ def ocr_page(image_path: str, *, tesseract_cmd: str | None = None) -> OCRPageRes
             words.append({"text": txt, "confidence": conf / 100.0})
             confs.append(conf)
 
-    text = " ".join(w["text"] for w in words)
+    text = " ".join(cast(str, w["text"]) for w in words)
     mean_confidence = float(sum(confs) / len(confs)) / 100.0 if confs else 0.0
     return OCRPageResult(text=text, mean_confidence=mean_confidence, words=words)

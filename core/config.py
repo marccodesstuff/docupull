@@ -21,7 +21,7 @@ class Settings(pydantic_settings.BaseSettings):
     output_dir: str = "./tmp/outputs"
 
 
-def get_settings():
+def get_settings() -> Settings:
     return Settings()
 
 

@@ -23,7 +23,9 @@ def preprocess_image(image_path: str) -> str:
         angle = 90 - angle if angle > 45 else -angle
         h, w = binary.shape
         m = cv2.getRotationMatrix2D((w / 2, h / 2), angle, 1.0)
-        binary = cv2.warpAffine(binary, m, (w, h), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE)
+        binary = cv2.warpAffine(
+            binary, m, (w, h), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE
+        )
 
     out_path = image_path + ".preprocessed.png"
     Image.fromarray(binary).save(out_path)

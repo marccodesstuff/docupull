@@ -26,7 +26,9 @@ def _extract_text(path: str) -> str:
     return "\n".join(p["text"] for p in pages)
 
 
-def run(path: str, *, threshold: float = 0.75, tesseract_cmd: str | None = None) -> dict[str, Any]:
+def run(
+    path: str, *, threshold: float = 0.75, tesseract_cmd: str | None = None
+) -> dict[str, Any]:
     densities = _page_densities(path)
     classes = classify_pages(densities)
 
@@ -68,8 +70,23 @@ def run(path: str, *, threshold: float = 0.75, tesseract_cmd: str | None = None)
     scores: dict[str, float] = {}
     for name, value in values.items():
         kind = "scanned" if scanned else "digital"
-        scores[name] = score_field(name=name, value=value, kind=kind, ocr_mean_conf=ocr_mean)
+        scores[name] = score_field(
+            name=name, value=value, kind=kind, ocr_mean_conf=ocr_mean
+        )
 
     status = route_document(scores=scores, threshold=threshold)
-    fields = [FieldScore(name=name, confidence=scores[name], source=("ocr" if scanned else "text"), value=value).to_dict() for name, value in values.items()]
-    return {"schema": data.model_dump(), "scores": fields, "overall_status": status, "source": "ocr" if scanned else "text"}
+    fields = [
+        FieldScore(
+            name=name,
+            confidence=scores[name],
+            source=("ocr" if scanned else "text"),
+            value=value,
+        ).to_dict()
+        for name, value in values.items()
+    ]
+    return {
+        "schema": data.model_dump(),
+        "scores": fields,
+        "overall_status": status,
+        "source": "ocr" if scanned else "text",
+    }

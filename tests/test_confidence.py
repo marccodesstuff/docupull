@@ -16,7 +16,9 @@ def test_score_field_digital_is_high() -> None:
 
 
 def test_score_field_scanned_uses_ocr_mean() -> None:
-    score = score_field(name="patient_id", value="ABCD", kind="scanned", ocr_mean_conf=0.8)
+    score = score_field(
+        name="patient_id", value="ABCD", kind="scanned", ocr_mean_conf=0.8
+    )
     assert score == pytest.approx(0.8, abs=0.01)
 
 
@@ -62,16 +64,26 @@ def test_run_returns_expected_keys(tmp_path) -> None:
         kind = FakeKind()
 
     fake_field = MagicMock()
-    fake_field.to_dict.return_value = {"name": "patient_id", "confidence": 0.9, "source": "text", "value": "P1"}
+    fake_field.to_dict.return_value = {
+        "name": "patient_id",
+        "confidence": 0.9,
+        "source": "text",
+        "value": "P1",
+    }
 
-    with patch("core.pipeline.extract_structured", return_value=fake_data), \
-         patch("core.pipeline.validate_document", return_value=fake_data), \
-         patch("core.pipeline.score_field", return_value=0.9), \
-         patch("core.pipeline.FieldScore", return_value=fake_field), \
-         patch("core.pipeline.route_document", return_value="ok"), \
-         patch("core.pipeline._page_densities", return_value=[(0, 500)]), \
-         patch("core.pipeline.classify_pages", return_value=[FakeClass()]), \
-         patch("core.pipeline.render_text", return_value=[{"index": 0, "text": "x", "chars": 500}]), \
-         patch("core.extract_structured.build_client", return_value=fake_client):
+    with (
+        patch("core.pipeline.extract_structured", return_value=fake_data),
+        patch("core.pipeline.validate_document", return_value=fake_data),
+        patch("core.pipeline.score_field", return_value=0.9),
+        patch("core.pipeline.FieldScore", return_value=fake_field),
+        patch("core.pipeline.route_document", return_value="ok"),
+        patch("core.pipeline._page_densities", return_value=[(0, 500)]),
+        patch("core.pipeline.classify_pages", return_value=[FakeClass()]),
+        patch(
+            "core.pipeline.render_text",
+            return_value=[{"index": 0, "text": "x", "chars": 500}],
+        ),
+        patch("core.extract_structured.build_client", return_value=fake_client),
+    ):
         result = run(str(pdf))
     assert {"schema", "scores", "overall_status", "source"} <= result.keys()

@@ -26,7 +26,9 @@ def test_extract_structured_uses_provider(monkeypatch: pytest.MonkeyPatch) -> No
     fake_client.generate_structured.assert_called_once()
 
 
-def test_extract_structured_defaults_to_lab_report(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_extract_structured_defaults_to_lab_report(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     fake_client = MagicMock()
     fake_client.generate_structured.return_value = LabReport(
         patient_id="P1", report_date="2026-07-08"

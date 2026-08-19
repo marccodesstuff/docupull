@@ -1,7 +1,6 @@
-
-
 def test_defaults(monkeypatch):
     from core.config import get_settings
+
     monkeypatch.setenv("LLM_PROVIDER", "openai")
     monkeypatch.setenv("TEXT_DENSITY_THRESHOLD", "200")
     s = get_settings()
@@ -13,6 +12,7 @@ def test_defaults(monkeypatch):
 
 def test_env_override(monkeypatch):
     from core.config import get_settings
+
     monkeypatch.setenv("LLM_PROVIDER", "anthropic")
     monkeypatch.setenv("TEXT_DENSITY_THRESHOLD", "150")
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)

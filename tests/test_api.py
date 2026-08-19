@@ -44,7 +44,9 @@ def test_extract_returns_json(client, monkeypatch: pytest.MonkeyPatch):
         }
 
     monkeypatch.setattr("app.routes.run", fake_run)
-    response = client.post("/extract", files={"file": ("lab.pdf", pdf_bytes, "application/pdf")})
+    response = client.post(
+        "/extract", files={"file": ("lab.pdf", pdf_bytes, "application/pdf")}
+    )
     assert response.status_code == 200
     assert response.json()["overall_status"] == "ok"
     assert response.json()["source"] == "text"

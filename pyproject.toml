@@ -20,9 +20,10 @@ dependencies = [
   "openai>=1.65",
   "anthropic>=0.48",
   "python-dotenv>=1.1",
+  "python-multipart>=0.0.9",
 ]
 
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
   "pytest>=8.3",
   "pytest-mock>=3.14",

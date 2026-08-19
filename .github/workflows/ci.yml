@@ -3,12 +3,16 @@ on: [push, pull_request]
 jobs:
   checks:
     runs-on: ubuntu-latest
+    env:
+      LLM_PROVIDER: openai
+      UPLOAD_DIR: ./tmp/uploads
+      OUTPUT_DIR: ./tmp/outputs
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v7
-      - run: uv sync --frozen
-      - run: pip install ruff black mypy pytest
-      - run: ruff check .
-      - run: black --check .
-      - run: mypy .
-      - run: pytest -q
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends tesseract-ocr poppler-utils
+      - run: uv sync --frozen --dev
+      - run: uv run ruff check .
+      - run: uv run black --check .
+      - run: uv run mypy .
+      - run: uv run pytest -q

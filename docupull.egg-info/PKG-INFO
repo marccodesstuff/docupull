@@ -16,11 +16,5 @@ Requires-Dist: pillow>=10.4
 Requires-Dist: openai>=1.65
 Requires-Dist: anthropic>=0.48
 Requires-Dist: python-dotenv>=1.1
-Provides-Extra: dev
-Requires-Dist: pytest>=8.3; extra == "dev"
-Requires-Dist: pytest-mock>=3.14; extra == "dev"
-Requires-Dist: ruff>=0.9; extra == "dev"
-Requires-Dist: black>=24.10; extra == "dev"
-Requires-Dist: mypy>=1.14; extra == "dev"
-Requires-Dist: httpx>=0.28; extra == "dev"
+Requires-Dist: python-multipart>=0.0.9
 Dynamic: license-file

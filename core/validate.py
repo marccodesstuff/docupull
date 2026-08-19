@@ -14,7 +14,9 @@ def _try_parse_date(value: object) -> str | None:
     return None
 
 
-def coerce_field(name: str, value: object, schema: type[BaseModel]) -> tuple[object, bool]:
+def coerce_field(
+    name: str, value: object, schema: type[BaseModel]
+) -> tuple[object, bool]:
     if name == "report_date":
         parsed = _try_parse_date(value)
         return parsed, parsed is not None

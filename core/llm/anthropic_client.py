@@ -9,12 +9,22 @@ from core.schema.lab_report import LabReport
 class AnthropicClient(BaseLLMClient):
     def generate_structured(self, *, prompt: str, schema: type[BaseModel]) -> BaseModel:
         if schema is LabReport:
-            return LabReport.model_validate({
-                "patient_id": "SYN-002",
-                "report_date": "2026-07-08",
-                "ordering_provider": "Dr. Doe",
-                "panel": [
-                    {"analyte": "Glucose", "value": 110.0, "unit": "mg/dL", "reference_range": "70-99", "flag": "H"}
-                ],
-            })
-        raise NotImplementedError("Wire Anthropic SDK here; interface is already defined.")
+            return LabReport.model_validate(
+                {
+                    "patient_id": "SYN-002",
+                    "report_date": "2026-07-08",
+                    "ordering_provider": "Dr. Doe",
+                    "panel": [
+                        {
+                            "analyte": "Glucose",
+                            "value": 110.0,
+                            "unit": "mg/dL",
+                            "reference_range": "70-99",
+                            "flag": "H",
+                        }
+                    ],
+                }
+            )
+        raise NotImplementedError(
+            "Wire Anthropic SDK here; interface is already defined."
+        )

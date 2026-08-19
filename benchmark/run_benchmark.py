@@ -31,7 +31,9 @@ def evaluate(records: list[dict[str, Any]]) -> dict[str, Any]:
     rows: list[dict[str, Any]] = []
     latencies: list[float] = []
     required = list(LabReport.model_fields.keys())
-    per_field: dict[str, dict[str, int]] = {name: {"tp": 0, "fp": 0, "fn": 0} for name in required}
+    per_field: dict[str, dict[str, int]] = {
+        name: {"tp": 0, "fp": 0, "fn": 0} for name in required
+    }
 
     for record in records:
         pdf = str(record["digital_pdf"])
@@ -41,7 +43,11 @@ def evaluate(records: list[dict[str, Any]]) -> dict[str, Any]:
         latencies.append(time.perf_counter() - start)
         pred = result["schema"]
 
-        row: dict[str, Any] = {"patient_id": record["patient_id"], "overall_status": result["overall_status"], "fields": {}}
+        row: dict[str, Any] = {
+            "patient_id": record["patient_id"],
+            "overall_status": result["overall_status"],
+            "fields": {},
+        }
         for name in required:
             t = _truth_field(truth, name)
             p = _pred_field(pred, name)
@@ -67,12 +73,22 @@ def evaluate(records: list[dict[str, Any]]) -> dict[str, Any]:
         tp, fp, fn = counts["tp"], counts["fp"], counts["fn"]
         precision = tp / (tp + fp) if (tp + fp) else 0.0
         recall = tp / (tp + fn) if (tp + fn) else 0.0
-        summary_fields[name] = {"precision": precision, "recall": recall, "f1": 2 * precision * recall / (precision + recall) if (precision + recall) else 0.0}
+        summary_fields[name] = {
+            "precision": precision,
+            "recall": recall,
+            "f1": (
+                2 * precision * recall / (precision + recall)
+                if (precision + recall)
+                else 0.0
+            ),
+        }
 
     return {
         "n": len(records),
         "latency_p50": statistics.median(latencies) if latencies else 0.0,
-        "latency_p95": sorted(latencies)[int(len(latencies) * 0.95)] if latencies else 0.0,
+        "latency_p95": (
+            sorted(latencies)[int(len(latencies) * 0.95)] if latencies else 0.0
+        ),
         "fields": summary_fields,
         "rows": rows,
     }
@@ -80,11 +96,15 @@ def evaluate(records: list[dict[str, Any]]) -> dict[str, Any]:
 
 def print_table(summary: dict[str, Any]) -> None:
     print(f"Processed {summary['n']} documents.")
-    print(f"Latency p50: {summary['latency_p50']:.3f}s | p95: {summary['latency_p95']:.3f}s")
+    print(
+        f"Latency p50: {summary['latency_p50']:.3f}s | p95: {summary['latency_p95']:.3f}s"
+    )
     print("| Field | Precision | Recall | F1 |")
     print("| --- | --- | --- | --- |")
     for name, values in summary["fields"].items():
-        print(f"| {name} | {values['precision']:.2f} | {values['recall']:.2f} | {values['f1']:.2f} |")
+        print(
+            f"| {name} | {values['precision']:.2f} | {values['recall']:.2f} | {values['f1']:.2f} |"
+        )
 
 
 def main() -> None:
